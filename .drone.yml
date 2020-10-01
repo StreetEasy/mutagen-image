@@ -1,0 +1,27 @@
+kind: pipeline
+name: images
+type: kubernetes
+
+steps:
+- name: build
+  image: plugins/docker
+  environment:
+  settings:
+    purge: false
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: zillownyc/mutagen
+    build_args:
+    - MUTAGEN_VERSION=v0.11.7
+    tags:
+    - latest
+    - "0.11.7"
+    - "0.11"
+
+trigger:
+  event:
+  - push
+  branch:
+  - main
